@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { Input } from './Input';
 import { useRecipes } from '../hooks/useRecipes';
 import { RecipesList } from './RecipesList';
+import { ErrorMessage } from './ErrorMessage';
 
 const Container = styled.main`
     display: flex;
@@ -33,7 +34,7 @@ export const Dashboard = () => {
     return (
         <Container>
             <Input query={query} onSubmit={onSubmit} setQuery={setQuery} />
-            {isError && <div>Oops, server error :( Please, pick different page.</div>}
+            {isError && <ErrorMessage />}
             <RecipesList
                 currentPage={currentPage}
                 isLoading={isLoading}

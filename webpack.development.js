@@ -78,7 +78,7 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify('development')
     }),
     new HtmlWebpackPlugin({
-      title: 'Nozbe',
+      title: 'Recipe Puppy Client',
       template: dir('index.ejs')
     })
   ]
