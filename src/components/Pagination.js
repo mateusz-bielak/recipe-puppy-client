@@ -1,4 +1,28 @@
 import React from 'react';
+import styled from '@emotion/styled';
+
+import { buttonStyle } from './Button';
+
+const List = styled.ul`
+    display: flex;
+    justify-content: space-between;
+
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+`;
+
+const ListItem = styled.li`
+    width: 8%;
+`;
+
+const Button = styled.button`
+    ${buttonStyle};
+    height: 100%;
+    width: 100%;
+    margin: 0;
+`;
 
 export const Pagination = ({ currentPage, onPageChange }) => {
     const { startPage, endPage } = generatePager(currentPage);
@@ -6,13 +30,13 @@ export const Pagination = ({ currentPage, onPageChange }) => {
     const pages = [...Array(endPage + 1 - startPage).keys()].map(value => startPage + value);
 
     return (
-        <ul>
+        <List>
             {pages.map((page, index) => (
-                <li key={index}>
-                    <button onClick={() => onPageChange(page)}>{page}</button>
-                </li>
+                <ListItem key={index}>
+                    <Button onClick={() => onPageChange(page)}>{page}</Button>
+                </ListItem>
             ))}
-        </ul>
+        </List>
     );
 };
 

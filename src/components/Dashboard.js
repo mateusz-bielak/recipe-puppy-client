@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import styled from '@emotion/styled';
 
 import { Pagination } from './Pagination';
+import { Input } from './Input';
+import { Recipe } from './Recipe';
+
+const Container = styled.main`
+    max-width: 460px;
+    margin: auto;
+`;
 
 export const Dashboard = () => {
     const [recipes, setRecipes] = useState([]);
@@ -51,41 +59,24 @@ export const Dashboard = () => {
     };
 
     return (
-        <>
-            <form onSubmit={onSubmit}>
-                <input type="text" value={query} onChange={event => setQuery(event.target.value)} />
-                <button type="submit">Search</button>
-            </form>
+        <Container>
+            <Input query={query} onSubmit={onSubmit} setQuery={setQuery} />
             {isError && <div>Something went wrong ...</div>}
             {recipes.length !== 0 ? (
                 <>
-                    {recipes.map(({ href, ingredients, thumbnail, title }) => (
-                        <div key={href}>
-                            <img src={thumbnail} />
-                            <a href={href}>{title}</a>
-                            <p>
-                                {ingredients.split(', ').map((ingredient, index) => (
-                                    <button
-                                        key={`${ingredient}${index}`}
-                                        onClick={pickIngredient}
-                                        value={ingredient}
-                                    >
-                                        {ingredient}
-                                    </button>
-                                ))}
-                            </p>
-                        </div>
+                    {recipes.map(recipe => (
+                        <Recipe key={recipe.href} pickIngredient={pickIngredient} recipe={recipe} />
                     ))}
                     <Pagination currentPage={currentPage} onPageChange={onPageChange} />
                 </>
             ) : isLoading ? (
-                <p>Leading...</p>
+                <p>Loading...</p>
             ) : (
                 <>
                     <p>Sorry your query return any recipes. Please broaden your search.</p>
                     <p>Input comma separated ingredients, in example: chicken, paprika, onions</p>
                 </>
             )}
-        </>
+        </Container>
     );
 };
