@@ -15,26 +15,54 @@ export const Dashboard = () => {
 
             const { results } = await fetch(url).then(res => res.json());
 
-            setRecipes(results);
+            const sortedRecipes = results.sort((a, b) => (a.title > b.title ? 1 : -1));
+
+            setRecipes(sortedRecipes);
             setIsLoading(false);
         };
 
         fetchData();
     }, [url]);
 
+    const onSubmit = event => {
+        event.preventDefault();
+        setUrl(`/api/?i=${query}&p=${currentPage}`);
+    };
+
     const onPageChange = page => {
         setCurrentPage(page);
         setUrl(`/api/?i=${query}&p=${page}`);
     };
 
+    const pickIngredient = async event => {
+        setQuery(event.target.value);
+        setUrl(`/api/?i=${event.target.value}&p=${currentPage}`);
+    };
+
     return (
         <>
-            <input type="text" value={query} onChange={event => setQuery(event.target.value)} />
-            <button onClick={() => setUrl(`/api/?i=${query}&p=${currentPage}`)}>Search</button>
+            <form onSubmit={onSubmit}>
+                <input type="text" value={query} onChange={event => setQuery(event.target.value)} />
+                <button type="submit">Search</button>
+            </form>
             {recipes.length !== 0 ? (
                 <>
-                    {recipes.map(({ href, title }) => (
-                        <p key={href}>{title}</p>
+                    {recipes.map(({ href, ingredients, thumbnail, title }) => (
+                        <div key={href}>
+                            <img src={thumbnail} />
+                            <a href={href}>{title}</a>
+                            <p>
+                                {ingredients.split(', ').map((ingredient, index) => (
+                                    <button
+                                        key={`${ingredient}${index}`}
+                                        onClick={pickIngredient}
+                                        value={ingredient}
+                                    >
+                                        {ingredient}
+                                    </button>
+                                ))}
+                            </p>
+                        </div>
                     ))}
                     <Pagination currentPage={currentPage} onPageChange={onPageChange} />
                 </>
@@ -43,7 +71,7 @@ export const Dashboard = () => {
             ) : (
                 <>
                     <p>Sorry your query return any recipes. Please broaden your search.</p>
-                    <p>Input comma separated inputs, in example: chicken, paprika, onions</p>
+                    <p>Input comma separated ingredients, in example: chicken, paprika, onions</p>
                 </>
             )}
         </>
