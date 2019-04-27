@@ -14,7 +14,7 @@ const List = styled.ul`
 `;
 
 const ListItem = styled.li`
-    width: 8%;
+    width: ${props => (props.navigation ? '40px' : '7%')};
 `;
 
 const Button = styled.button`
@@ -22,6 +22,8 @@ const Button = styled.button`
     height: 100%;
     width: 100%;
     margin: 0;
+    padding: 0;
+
     background-color: ${props => (props.active ? '#9c27b0' : '')};
     color: ${props => (props.active ? '#fff' : '#333')};
 `;
@@ -33,6 +35,12 @@ export const Pagination = ({ currentPage, onPageChange }) => {
 
     return (
         <List>
+            <ListItem navigation>
+                <Button onClick={() => onPageChange(1)}>First</Button>
+            </ListItem>
+            <ListItem navigation>
+                <Button onClick={() => onPageChange(currentPage - 1)}>Prev</Button>
+            </ListItem>
             {pages.map((page, index) => (
                 <ListItem key={index}>
                     <Button active={currentPage === page} onClick={() => onPageChange(page)}>
@@ -40,6 +48,12 @@ export const Pagination = ({ currentPage, onPageChange }) => {
                     </Button>
                 </ListItem>
             ))}
+            <ListItem navigation>
+                <Button onClick={() => onPageChange(currentPage + 1)}>Next</Button>
+            </ListItem>
+            <ListItem navigation>
+                <Button onClick={() => onPageChange(100)}>Last</Button>
+            </ListItem>
         </List>
     );
 };
@@ -47,22 +61,22 @@ export const Pagination = ({ currentPage, onPageChange }) => {
 const generatePager = currentPage => {
     const totalPages = 100;
 
-    if (currentPage <= 6) {
+    if (currentPage <= 4) {
         return {
             startPage: 1,
-            endPage: 10,
+            endPage: 7,
         };
     }
 
     if (currentPage + 4 >= totalPages) {
         return {
-            startPage: totalPages - 9,
+            startPage: totalPages - 6,
             endPage: totalPages,
         };
     }
 
     return {
-        startPage: currentPage - 5,
-        endPage: currentPage + 4,
+        startPage: currentPage - 3,
+        endPage: currentPage + 3,
     };
 };

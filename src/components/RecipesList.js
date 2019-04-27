@@ -3,20 +3,15 @@ import React from 'react';
 import { Pagination } from './Pagination';
 import { Recipe } from './Recipe';
 
-import { Loading } from './Loading';
-import { NoRecipes } from './NoRecipes';
+import { withLoadingAndNoRecipes } from '../hocs/withLoadingAndNoRecipes';
 
-export const RecipesList = ({ currentPage, isLoading, onPageChange, pickIngredient, recipes }) => {
-    if (!recipes.length) {
-        return isLoading ? <Loading /> : <NoRecipes />;
-    }
+const RecipesListComponent = ({ currentPage, onPageChange, pickIngredient, recipes }) => (
+    <>
+        {recipes.map(recipe => (
+            <Recipe key={recipe.href} pickIngredient={pickIngredient} recipe={recipe} />
+        ))}
+        <Pagination currentPage={currentPage} onPageChange={onPageChange} />
+    </>
+);
 
-    return (
-        <>
-            {recipes.map(recipe => (
-                <Recipe key={recipe.href} pickIngredient={pickIngredient} recipe={recipe} />
-            ))}
-            <Pagination currentPage={currentPage} onPageChange={onPageChange} />
-        </>
-    );
-};
+export const RecipesList = withLoadingAndNoRecipes(RecipesListComponent);

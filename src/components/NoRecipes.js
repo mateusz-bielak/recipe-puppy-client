@@ -14,9 +14,9 @@ const SecondaryInfo = styled.p`
 
 export const NoRecipes = () => (
     <>
-        <MainInfo>Sorry your query return any recipes. Please broaden your search.</MainInfo>
+        <MainInfo>Sorry your query did not return any recipes. Please broaden your search.</MainInfo>
         <SecondaryInfo>
-            Input comma separated ingredients, in example: chicken, paprika, onions.
+            Insert comma separated ingredients, in example: chicken, paprika, onions.
         </SecondaryInfo>
     </>
 );

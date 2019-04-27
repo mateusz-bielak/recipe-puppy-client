@@ -38,7 +38,6 @@ const Ingredient = styled.button`
 const Image = styled.img`
     object-fit: cover;
     height: 80px;
-    width: 80px;
 `;
 
 export const Recipe = ({ pickIngredient, recipe: { href, ingredients, thumbnail, title } }) => (

@@ -40,7 +40,8 @@ export const useRecipes = () => {
 
     const pickIngredient = async event => {
         setQuery(event.target.value);
-        setUrl(`/api/?i=${event.target.value}&p=${currentPage}`);
+        setCurrentPage(1);
+        setUrl(`/api/?i=${event.target.value}&p=${1}`);
     };
 
     return {
