@@ -8,16 +8,27 @@ export const Dashboard = () => {
     const [url, setUrl] = useState(`/api/?p=1`);
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsError(false);
             setIsLoading(true);
 
-            const { results } = await fetch(url).then(res => res.json());
+            window.scroll({
+                top: 0,
+                behavior: 'smooth',
+            });
 
-            const sortedRecipes = results.sort((a, b) => (a.title > b.title ? 1 : -1));
+            try {
+                const { results } = await fetch(url).then(res => res.json());
+                const sortedRecipes = results.sort((a, b) => (a.title > b.title ? 1 : -1));
 
-            setRecipes(sortedRecipes);
+                setRecipes(sortedRecipes);
+            } catch (error) {
+                setIsError(true);
+            }
+
             setIsLoading(false);
         };
 
@@ -45,6 +56,7 @@ export const Dashboard = () => {
                 <input type="text" value={query} onChange={event => setQuery(event.target.value)} />
                 <button type="submit">Search</button>
             </form>
+            {isError && <div>Something went wrong ...</div>}
             {recipes.length !== 0 ? (
                 <>
                     {recipes.map(({ href, ingredients, thumbnail, title }) => (
