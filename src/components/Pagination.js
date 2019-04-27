@@ -22,6 +22,8 @@ const Button = styled.button`
     height: 100%;
     width: 100%;
     margin: 0;
+    background-color: ${props => (props.active ? '#9c27b0' : '')};
+    color: ${props => (props.active ? '#fff' : '#333')};
 `;
 
 export const Pagination = ({ currentPage, onPageChange }) => {
@@ -33,7 +35,9 @@ export const Pagination = ({ currentPage, onPageChange }) => {
         <List>
             {pages.map((page, index) => (
                 <ListItem key={index}>
-                    <Button onClick={() => onPageChange(page)}>{page}</Button>
+                    <Button active={currentPage === page} onClick={() => onPageChange(page)}>
+                        {page}
+                    </Button>
                 </ListItem>
             ))}
         </List>
