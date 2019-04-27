@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
+import { Pagination } from './Pagination';
+
 export const Dashboard = () => {
     const [recipes, setRecipes] = useState([]);
     const [query, setQuery] = useState('');
     const [url, setUrl] = useState(`/api/?p=1`);
+    const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -19,12 +22,22 @@ export const Dashboard = () => {
         fetchData();
     }, [url]);
 
+    const onPageChange = page => {
+        setCurrentPage(page);
+        setUrl(`/api/?i=${query}&p=${page}`);
+    };
+
     return (
         <>
             <input type="text" value={query} onChange={event => setQuery(event.target.value)} />
-            <button onClick={() => setUrl(`/api/?i=${query}&p=1`)}>Search</button>
+            <button onClick={() => setUrl(`/api/?i=${query}&p=${currentPage}`)}>Search</button>
             {recipes.length !== 0 ? (
-                recipes.map(({ href, title }) => <p key={href}>{title}</p>)
+                <>
+                    {recipes.map(({ href, title }) => (
+                        <p key={href}>{title}</p>
+                    ))}
+                    <Pagination currentPage={currentPage} onPageChange={onPageChange} />
+                </>
             ) : isLoading ? (
                 <p>Leading...</p>
             ) : (
