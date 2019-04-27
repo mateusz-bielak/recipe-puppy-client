@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { Pagination } from './Pagination';
 import { Input } from './Input';
-import { Recipe } from './Recipe';
 import { useRecipes } from '../hooks/useRecipes';
+import { RecipesList } from './RecipesList';
 
 const Container = styled.main`
+    display: flex;
+    flex-direction: column;
     max-width: 460px;
     margin: auto;
 `;
@@ -33,21 +34,13 @@ export const Dashboard = () => {
         <Container>
             <Input query={query} onSubmit={onSubmit} setQuery={setQuery} />
             {isError && <div>Oops, server error :( Please, pick different page.</div>}
-            {recipes.length !== 0 ? (
-                <>
-                    {recipes.map(recipe => (
-                        <Recipe key={recipe.href} pickIngredient={pickIngredient} recipe={recipe} />
-                    ))}
-                    <Pagination currentPage={currentPage} onPageChange={onPageChange} />
-                </>
-            ) : isLoading ? (
-                <p>Loading...</p>
-            ) : (
-                <>
-                    <p>Sorry your query return any recipes. Please broaden your search.</p>
-                    <p>Input comma separated ingredients, in example: chicken, paprika, onions</p>
-                </>
-            )}
+            <RecipesList
+                currentPage={currentPage}
+                isLoading={isLoading}
+                onPageChange={onPageChange}
+                pickIngredient={pickIngredient}
+                recipes={recipes}
+            />
         </Container>
     );
 };
